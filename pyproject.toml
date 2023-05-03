@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "gendiff"
+version = "0.1.0"
+description = ""
+authors = ["Nikita Olegovich <xdoku@yandex.ru>"]
+readme = "README.md"
+packages = [{ include = "gendiff" },]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.scripts]
+gendiff = "gendiff.cli:main"
+
+[tool.poetry.group.dependencies.dependencies]
+flake8 = "^6.0.0"
+pytest = "^7.3.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
