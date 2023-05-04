@@ -1,6 +1,7 @@
 import argparse
-import json
+import json 
 import os
+import io
 
 
 os.chdir(path="/home/nikita/VScode/gendiff/gendiff")
@@ -17,22 +18,26 @@ def sort_by(list_to_filter):
             return key
 
 
-def print_diff(diff):
-    print("{")
+def diff_processing(diff):
+    output_buffer = io.StringIO()
+
+    print("{", file=output_buffer)
     for list_element in diff:
         for key, value in list_element.items():
-            # print(f"{key}: {value}")
             match key:
                 case "minus":
-                    print(f"- {value[0]}: {value[1]}")
+                    print(f"- {value[0]}: {value[1]}", file=output_buffer)
                 case "neutral":
-                    print(f"  {value[0]}: {value[1]}")
+                    print(f"  {value[0]}: {value[1]}", file=output_buffer)
                 case "plus":
-                    print(f"+ {value[0]}: {value[1]}")
+                    print(f"+ {value[0]}: {value[1]}", file=output_buffer)
                 case "plus-minus":
-                    print(f"- {value[0]}: {value[1]}")
-                    print(f"+ {value[0]}: {value[1]}")
-    print("}")
+                    print(f"- {value[0]}: {value[1]}", file=output_buffer)
+                    print(f"+ {value[0]}: {value[1]}", file=output_buffer)
+    print("}", file=output_buffer)
+
+    output_string = output_buffer.getvalue()
+    return output_string
 
 
 def gendiff_diff(first_file, second_file):
@@ -53,8 +58,9 @@ def gendiff_diff(first_file, second_file):
             result_list.append({"plus": (key, second_file.get(key))})
 
     result_list.sort(key=sort_by)
-    return str(result_list)
-
+    output = diff_processing(result_list)
+    return output
+    
 
 def main():
     parser = argparse.ArgumentParser(
@@ -67,4 +73,5 @@ def main():
 
     first = read(args.first_file)
     second = read(args.second_file)
-    gendiff_diff(first, second)
+    diff = gendiff_diff(first, second)
+    print(diff)
