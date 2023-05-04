@@ -35,7 +35,7 @@ def print_diff(diff):
     print("}")
 
 
-def gendiff_diff(first_file: dict, second_file):
+def gendiff_diff(first_file, second_file):
     result_list = list()
 
     for key in first_file:
@@ -53,7 +53,7 @@ def gendiff_diff(first_file: dict, second_file):
             result_list.append({"plus": (key, second_file.get(key))})
 
     result_list.sort(key=sort_by)
-    print_diff(result_list)
+    return str(result_list)
 
 
 def main():
